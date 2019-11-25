@@ -26,14 +26,17 @@ module.exports.getOrder = async (req, res) => {
 
 module.exports.postOrder = async (req, res) => {
   try {
-    console.log(req.body.facebook_id);
-    if(req.body.facebook_id){ ///login using facebook for mobile app
-      await doSignupUsingFacebook(req,res);      
-    }else if(req.body.phoneNumber){///login using mobile for mobile app
-      await doLoginSignUpUsingPhone(req,res);
-    }else{ ///login using email and password for website
-      await doLoginUsingEmailPassword(req,res);      
-    }    
+    console.log(req.body);
+    if(req.body){ ///login using facebook for mobile app
+       rulesCheckUp(req,res);      
+    }
+    // if(req.body){ ///login using facebook for mobile app
+    //   await doSignupUsingFacebook(req,res);      
+    // }else if(req.body.phoneNumber){///login using mobile for mobile app
+    //   await doLoginSignUpUsingPhone(req,res);
+    // }else{ ///login using email and password for website
+    //   await doLoginUsingEmailPassword(req,res);      
+    // }    
   } catch (error) {
     console.log(error);
     return res
@@ -43,6 +46,28 @@ module.exports.postOrder = async (req, res) => {
     });
   }
 };
+
+rulesCheckUp = (req,res) => {
+  let rules = [];
+  console.log('req.body.orderDet',req.body.orderDet.quentity);
+  if(req.body.orderDet.quentity>100){
+    rules.push({rule:'quentity over'});
+  }
+  if(req.body.orderDet.paymentZip !== req.body.orderDet.addressZip){
+    rules.push({rule:'Zip code mismatched'});
+  }
+  if(req.body.orderDet.timezone>100){
+    rules.push({rule:'quentity over'});
+  }
+
+  console.log('rules',rules);
+  
+  return res.json({
+    rules: rules
+  });
+  
+};
+
 module.exports.register = async (req, res) => {
   try {
     // validateError.validateError(req,res);
