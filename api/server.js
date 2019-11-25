@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const express = require('express');
 const app = express();
-var validationError = require('./utils/validationError');
 
 const {
   check
@@ -18,7 +17,6 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use('/uploads/images', express.static(__dirname + '/public/uploads/images'));
-app.use('/uploads/video', express.static(__dirname + '/public/uploads/video'));
 
 app.use(cors()); //enable cores
 
